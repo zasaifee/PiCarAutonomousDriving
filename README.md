@@ -1,10 +1,11 @@
 ## SunFounder PiCar-S
 SunFounder PiCar Kit Series：PiCar-S(S for sensors)
-
+_______________________________________________________________________
 This is an updated version of the SunFounder PiCar Kit - S. 
 It has been worked on by Zarin Saifee and Stephanie Torres. 
-
+_______________________________________________________________________
 New Files:
+
 Test1.py - General Moving
 
 Tester.py - Moving Straight
