@@ -47,11 +47,12 @@ def move(angle, distance):
     print("Travel time: " + str(travel_time))
 
     # Calculate the turning rate based on the forward speed and the maximum turning rate
-    turning_rate = forward_speed/fw.turning_max
+
+    turning_rate = (forward_speed)/fw.turning_max
     print("turning rate" + str(turning_rate))
 
     # Calculate the time it takes to turn the given angle at the turning rate
-    turning_time = (abs(angle))/turning_rate
+    turning_time = abs(angle)/turning_rate
     print("turning time: " + str(turning_time))
 
     # If the angle is positive, turn left
@@ -103,15 +104,18 @@ while True:
     data = sock.recv(16)    # Recieve data from server reading 16 bytes of data
     if data:    # If data recieved
         coordinate = data.decode('utf-8')   # Decode data from byte to string
-        
+
+
+###################################################################################################
         # coordinate = coordinate.replace ('(', '').replace(')','')
         # new_coordinate = tuple(map(float, coordinate))
 
         #coordinate = coordinate.replace ('(', '').replace(')','')
         #coordinate = coordinate.split(',')
-        # new_coordinate = tuple(map(float, coordinate))
+        #new_coordinate = tuple(map(float, coordinate))
         #coordinate = tuple(map(float, coordinate.strip('()').split(',')))
         #print(new_coordinate)
+###################################################################################################
 
         print('Current coordinate: {!r}'.format(coordinate))   # r! convert value to string
 
