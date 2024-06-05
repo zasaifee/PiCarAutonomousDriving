@@ -1,6 +1,27 @@
 ## SunFounder PiCar-S
 SunFounder PiCar Kit Series：PiCar-S(S for sensors)
 
+This is an updated version of the SunFounder PiCar Kit - S. 
+It has been worked on by Zarin Saifee and Stephanie Torres. 
+
+New Files:
+Test1.py - General Moving
+
+Tester.py - Moving Straight
+
+RaspberyPiCoordinate.py - Fallback file. Able to communicate with 
+computer/camera. Should consistently work, if other files fail.
+
+RaspberryPiNew.py - File being edited. Communicates and moves the car
+from one coordinate to another. 
+
+________________________________________________________________________
+All other files in this repo were provided by SunFounder, and required
+for the functionality of any new code. 
+________________________________________________________________________
+
+
+
 Quick Links:
 
  * [About SunFounder PiCar-S](#about_this_kit)
