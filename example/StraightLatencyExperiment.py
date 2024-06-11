@@ -12,11 +12,10 @@ from picar import front_wheels
 from picar import back_wheels
 from datetime import datetime
 import picar
-import ast
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('10.200.207.224', 12345)  
+server_address = ('10.200.207.132', 12345)  
 #.132 (zarin IP)
 sock.connect(server_address)    
 
@@ -70,6 +69,10 @@ def pivot_turn():
     bw.right_wheel.forward()
 
 def move(distance):
+    global moveTime
+    moveTime = datetime.now()
+    print("The time by the movement is: ")
+    print(moveTime)
     travel_time = distance/forward_speed
     bw.speed = forward_speed
     bw.forward()
@@ -102,11 +105,14 @@ def main():
     """
     data = sock.recv(16)    # Recieve data from server reading 16 bytes of data
     if data:
-        coordinate = data.decode('utf-8')   # Decode data from byte to string
 
-        
+        # Retrieve coordinate data from camera
+        coordinate = data.decode('utf-8')   # Decode data from byte to string
         #print('Current coordinate string: {!r}'.format(coordinate))   # r! convert value to string
+        
+        # Current coordinate stuff
         coordinate_split = coordinate.split(",")
+        print(coordinate_split)
         x_coord_str = coordinate_split[0]
         y_coord_str = coordinate_split[1]
         x_coord = int(x_coord_str)
@@ -117,22 +123,45 @@ def main():
 
         # Ask the user for a new coordinate
         new_coordinate = get_user_coordinate()
+        print("The destination coordinate: ")
         print(new_coordinate)
 
+        # Retrieve coordinate data from camera
+        coordinate = data.decode('utf-8')   # Decode data from byte to string
+        #print('Current coordinate string: {!r}'.format(coordinate))   # r! convert value to string
+        
+        # Current coordinate stuff
+        coordinate_split = coordinate.split(",")
+        print(coordinate_split)
+        x_coord_str = coordinate_split[0]
+        y_coord_str = coordinate_split[1]
+        x_coord = int(x_coord_str)
+        y_coord = int(y_coord_str)
+        coordinate_int = (x_coord, y_coord)
+        print("Current Coordinate Int: ")
+        print(coordinate_int)
+
+        
+       
         now = datetime.now()
+        print("The current time is : ")
         print(now)
 
         # Calculate angle and distance to the new coordinate
         distance = calculate_distance(coordinate_int, new_coordinate)
-            
-
-        now = datetime.now()
-        print(now)
-
+        print("The distance is: ")
+        print(distance)
 
         # Move the robot to the new coordinate
         move(distance)
-        print(distance)
+
+        # Calculate latency
+        latency = moveTime - now
+        print("The latency is: ")
+        print(latency)
+
+
+        
 
 
 if __name__ == '__main__':
