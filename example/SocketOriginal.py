@@ -15,37 +15,6 @@ sock.connect(server_address)    # Establish the connecton to remote server
 
 last_coordinate = None  # Variable to store last recieved coordinate
 
-# General PiCar setup
-picar.setup()
-
-forward_speed = 50
-backward_speed = 35
-
-fw = front_wheels.Front_Wheels(db='config')
-bw = back_wheels.Back_Wheels(db='config')
-
-fw.ready()
-bw.ready()
-fw.turning_max = 45
-
-def move(angle, distance):
-    travel_time = distance/forward_speed
-    print("turning" + str(angle))
-    fw.turn(angle)
-    bw.speed = forward_speed
-    time.sleep(5.0)     # Added . because its a float
-    bw.forward()
-    time.sleep(travel_time)
-    print("Stopping car")
-
-    bw.stop()
-    time.sleep(5.0)  ## Added time for sleep in order have longer wait
-                     ## or else it would stop and go right away 
-
-def end():
-    bw.stop()
-    fw.turn(90)
-
 # Start of data transfer 
 # Receive the data in small chunks and perform your actions
 while True:
