@@ -6,15 +6,19 @@ It has been worked on by Zarin Saifee and Stephanie Torres.
 _______________________________________________________________________
 New Files:
 
-Test1.py - General Moving
+TestMovingOfRobot.py - General Movement
 
-Tester.py - Moving Straight
+TestSocketAndCoordinate.py - Fallback file for communicating with computer/camera
 
-RaspberyPiCoordinate.py - Fallback file. Able to communicate with 
-computer/camera. Should consistently work, if other files fail.
+Turn_Calibration.py - Test different times where indicated in order to determine how many seconds it takes to pivot turn exactly 180 degrees (from there you can calculate the seconds it takes to travel 1 degree)
 
-RaspberryPiNew.py - File being edited. Communicates and moves the car
-from one coordinate to another. 
+PivotTurnMain.py -  Main program that has the robot use the pivot turn to reach destination coordinate
+
+SocketOriginal.py - Tests socket
+
+StraightLatencyExperiment.py - The program that tests the latency of the robot as it calculates the time it takes to process the data. Studying how the car moves forward.
+
+FrontWheelMain.py - Main program that has the robot use the front wheels to turn to reach the destination coordinate.
 
 ________________________________________________________________________
 All other files in this repo were provided by SunFounder, and required
