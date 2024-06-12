@@ -70,7 +70,7 @@ def timeCalc(angle):
     turning_time = abs(angle)*0.05
     print("Turning Time: " + str(turning_time))
 
-def move(angle, distance):
+def move():
     """
     Move the car based on the given angle and distance.
 
@@ -78,25 +78,12 @@ def move(angle, distance):
     angle (float): The angle to turn.
     distance (float): The distance to move.
     """
-    travel_time = distance/forward_speed
-    print("Travel time: " + str(travel_time))
 
-    turning_time = abs(angle)*0.05
-    print("Turning Time: " + str(turning_time))
-
-    pivot_turn()
-    time.sleep(turning_time)
-    bw.stop()
-
-    time.sleep(2.0)
-
-    fw.turn_straight()
-    bw.speed = forward_speed
+    bw.speed = 45
     bw.forward()
-    time.sleep(travel_time)
-    bw.stop()
-
     time.sleep(5.0)
+    bw.speed = 0
+    bw.stop()
 
 def end():
     """
@@ -110,9 +97,7 @@ def end():
 current_coordinate = home_coordinate
 
 def main():
-    pivot_turn()
-    bw.speed = 0
-    bw.stop()
+    move()
 
 
 if __name__ == '__main__':
