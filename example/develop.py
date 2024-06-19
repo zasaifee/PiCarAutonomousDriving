@@ -101,47 +101,6 @@ def get_user_coordinate():
     y = float(input("Enter the y-coordinate: "))
     return (x, y)
 
-
-# def main():
-#     """
-#     The main function to receive data, get user coordinate, calculate angle and distance, and move the car.
-#     """
-#     global last_coordinate  # Make last_coordinate global so it can be updated
-
-#     data = sock.recv(1024)    # Receive data from server reading 16 bytes of data
-#     if data:
-#         # Retrieve coordinate data from camera
-#         coordinate = data.decode('utf-8')   # Decode data from byte to string
-
-#         x_str, y_str = coordinate.split(',')
-#         x_coord = int(x_str)
-#         y_coord = int(y_str)
-#         coordinate_int = (x_coord, y_coord)
-
-#         # Ask the user for a new coordinate
-#         new_coordinate = get_user_coordinate()
-#         print("The destination coordinate: ")
-#         print(new_coordinate)
-
-#         # # Current coordinate stuff
-#         # coordinate_split = coordinate.split(",")
-#         # print(coordinate_split)
-#         # x_coord_str = coordinate_split[0]
-#         # y_coord_str = coordinate_split[1]
-#         # x_coord = int(x_coord_str)
-#         # y_coord = int(y_coord_str)
-#         # coordinate_int = (x_coord, y_coord)
-#         # print("Current Coordinate Int: ")
-#         # print(coordinate_int)
-
-#         # Calculate angle and distance to the new coordinate
-#         distance = calculate_distance(coordinate_int, new_coordinate)
-#         print("The distance is: ")
-#         print(distance)
-
-#         # Move the robot to the new coordinate
-#         move(distance)
-
 def main():
     """
     The main function to receive data, get user coordinate, calculate angle and distance, and move the car.
@@ -171,7 +130,7 @@ def main():
                 y_coord = int(y_str)
                 coordinate_int = (x_coord, y_coord)
             else:
-                print("Received unexpected coordinate format: " + line)
+                # print("Received unexpected coordinate format: " + line)
                 # Handle unexpected coordinate format here
                 continue
             
@@ -179,9 +138,11 @@ def main():
             new_coordinate = get_user_coordinate()
             print("The destination coordinate: ")
             print(new_coordinate)
+            # Calculate angle and distance to the new coordinate
 
             print(coordinate_int)
-            # Calculate angle and distance to the new coordinate
+
+
             distance = calculate_distance(coordinate_int, new_coordinate)
             print("The distance is: ")
             print(distance)
