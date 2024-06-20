@@ -53,10 +53,12 @@ def calculate_distance(current_coordinate, new_coordinate):
     distance (float): The calculated distance.
     """
     dx = new_coordinate[0] - current_coordinate[0]
-    dy = new_coordinate[1] - current_coordinate[1]
-    
+    # dy = new_coordinate[1] - current_coordinate[1]
+    dy = current_coordinate[1] - new_coordinate[1]
+
     distance = math.sqrt(dx**2 + dy**2)
-    return distance
+    return dy
+
 
 def pivot_turn():
     """
@@ -67,6 +69,7 @@ def pivot_turn():
     bw.left_wheel.backward()
     bw.right_wheel.forward()
 
+
 def move(coordA, coordB):
     if coordA == coordB:
         end()
@@ -74,7 +77,7 @@ def move(coordA, coordB):
     else:
         bw.speed = forward_speed
         bw.forward()
-        time.sleep(1.0) #travel time is 1.0 second
+        time.sleep(0.25) #travel time is 1.0 second
         bw.speed = 0
         bw.stop()
     
@@ -98,7 +101,6 @@ def get_user_coordinate():
     return (x, y)
 
 
-
 def main():
     """
     The main function to receive data, get user coordinate, calculate angle and distance, and move the car.
@@ -107,6 +109,8 @@ def main():
     new_coordinate = get_user_coordinate()
     print("The destination coordinate: ")
     print(new_coordinate)
+    prev_distance = 0
+    distance = 0
     
     while True:
         data = sock.recv(1024)    # Receive data from server
@@ -131,27 +135,32 @@ def main():
                         x_coord = int(x_str)
                         y_coord = int(y_str)
                         coordinate_int = (x_coord, y_coord)
-                        # print("Current Coordinate Int: ")
-                        # print(coordinate_int)
+                        print("Current Coordinate Int: ")
+                        print(coordinate_int)
                 else:
-                    print("Received unexpected coordinate format: " + line)
+                    # print("Received unexpected coordinate format: " + line)
                     # Handle unexpected coordinate format here
                     continue
-                
-                
+
                 distance = calculate_distance(coordinate_int, new_coordinate)
                 print("The current distance: ")
                 print(distance)
 
-                # update distance maybe?????
-                
-                time.sleep(3.0)
-                move(coordinate_int, new_coordinate)
-                time.sleep(3.0)
-
-                if distance < 5:
+                # update distance
+                if distance <= 10:
                     end()
                     return
+                
+                time.sleep(1.0)
+                move(coordinate_int, new_coordinate)
+                time.sleep(1.0)
+
+                prev_distance = distance
+                print(prev_distance)
+
+
+
+
 
 
 
