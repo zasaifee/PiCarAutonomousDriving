@@ -6,6 +6,7 @@ from the crosshair to the QR code. The script runs continuously until ‘q’ is
 
 Author: Daniel Lee
 Edited By: Zarin Saifee and Stephanie Torres
+
 """
 
 import cv2
