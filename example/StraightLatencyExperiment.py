@@ -7,7 +7,7 @@ Authors: Zarin Saifee & Stephanie Torres
 import socket   
 import time
 import math
-from SunFounder_Line_Follower import Line_Follower
+#from SunFounder_Line_Follower import Line_Follower
 from picar import front_wheels
 from picar import back_wheels
 from datetime import datetime
@@ -15,7 +15,7 @@ import picar
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('10.200.207.224', 12345)  
+server_address = ('10.200.207.132', 12345)  
 #.132 (zarin IP)
 sock.connect(server_address)    
 
@@ -38,8 +38,6 @@ bw.ready()
 # Set the maximum turning angle
 fw.turning_max = 45
 
-# Define the home coordinate
-#home_coordinate = (-151,139)
 
 def calculate_distance(current_coordinate, new_coordinate):
     """
@@ -118,7 +116,6 @@ def main():
         new_coordinate = get_user_coordinate()
         print("The destination coordinate: ")
         print(new_coordinate)
-
         
         # Current coordinate stuff
         coordinate_split = coordinate.split(",")
@@ -131,7 +128,6 @@ def main():
         print("Current Coordinate Int: ")
         print(coordinate_int)
 
-        
        
         now = datetime.now()
         print("The current time is : ")
