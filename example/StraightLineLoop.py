@@ -52,20 +52,17 @@ fw.turning_max = 45
 
 def calculate_distance(current_coordinate, new_coordinate):
     """
-    Calculates the Euclidean distance between two coordinates.
+    Calculates the y-axis distance between two coordinates.
 
     Args:
         current_coordinate (tuple): Current (x, y) coordinate.
         new_coordinate (tuple): New (x, y) coordinate.
 
     Returns:
-        float: Euclidean distance.
+        float: Difference between y-coordinates.
     """
-    dx = new_coordinate[0] - current_coordinate[0]
-    # dy = new_coordinate[1] - current_coordinate[1]
     dy = current_coordinate[1] - new_coordinate[1]
 
-    distance = math.sqrt(dx**2 + dy**2)
     return dy
 
 def move(coordA, coordB):
