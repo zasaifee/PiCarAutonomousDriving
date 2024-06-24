@@ -41,6 +41,10 @@ sock.listen(1)
 connection, client_address = sock.accept()
 print(f"Accepted connection from {client_address[0]}:{client_address[1]}")
 
+"""
+Lines 47-75 is code that was written by Daniel Lee. The code sets up the QR and Camera.
+Including showing the X and Y coordinates on the top left of the screen.
+"""
 if not vid_capture.isOpened():
     print("Error opening webcam!")
 else:
