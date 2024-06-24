@@ -114,5 +114,3 @@ def Gyro():
         # Print the values
         print("Roll: ", roll, " Pitch: ", pitch, " Yaw: ", yaw)
         time.sleep(0.09)
-
-
