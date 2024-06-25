@@ -80,12 +80,14 @@ bus.write_byte_data(MPU, 0x6B, 0x00)
 
 # Call this function if you need to get the IMU error values for your module
 calculate_IMU_error()
+yaw = 0
 
 def Gyro():
     """
     Function to calculate Gyro values and print them consistently
     """
     while True:
+        global yaw
         # === Read accelerometer data === //
         AccX = read_mpu6050_data(ACCEL_XOUT_H) / 16384.0
         AccY = read_mpu6050_data(ACCEL_XOUT_H+2) / 16384.0
