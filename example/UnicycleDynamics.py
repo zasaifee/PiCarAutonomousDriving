@@ -24,6 +24,6 @@ def unicycleDynamics(X, U):
 
     print(v)
     print(w)
-    return v,w
+    return v,w,phi
 
 unicycleDynamics([70, 150, (math.pi)/2], [100, -100, 0])

@@ -37,7 +37,6 @@ last_coordinate = None
 
 picar.setup()
 
-
 # Initialize robot car parameters
 forward_speed = 50
 backward_speed = 35

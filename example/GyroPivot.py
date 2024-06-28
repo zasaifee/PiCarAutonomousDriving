@@ -7,6 +7,7 @@ from picar import back_wheels
 import picar
 import re
 import numpy as np
+import UnicycleDynamics as ud
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -53,45 +54,8 @@ def calculate_distance(current_coordinate, new_coordinate):
     distance = math.sqrt(dx**2 + dy**2)
     return distance
 
-def calculate_angle(coordA, coordB):
-    """
-    Calculates the angle between two coordinates.
-
-    Args:
-        coordA (tuple): Starting (x, y) coordinate.
-        coordB (tuple): Target (x, y) coordinate.
-
-    Returns:
-        float: Angle in degrees.
-    """
-    # Convert coordinates to numpy arrays
-
-def unicycleDynamics(X, U):
-    """
-    Args: X, U
-            X = Starting point array. [X_0, Y_0, theta_0] - (x,y) and starting angle with respect to x-axis
-            U = Destination Point Array. [U_x,U_y, U_theta] - (x,y), the U_theta is not relevent in this code 
-            as the element is not used at any point but it needs to be included to calculate the norm 
-
-    Return: v, w
-            v = forward_velocity
-            w = angular_velocity
-    """
-    X = np.array(X)
-    U = np.array(U)
-    e = U-X
-    E = np.linalg.norm(e)
-    dx = U[0] - X[0]
-    dy = U[1] - X[1]
-    phi = math.atan2(dy, dx) - X[2]
-    v = E* math.cos(phi)
-    w = ((math.cos(phi) + 1) * math.sin(phi))+ phi
-
-    print(v)
-    print(w)
-    return v,w
    
-def pivot_turn(angle_difference):
+def pivot_turn(angle_difference, angular_velocity):
     """
     Perform a pivot turn based on the desired angle.
 
@@ -103,7 +67,7 @@ def pivot_turn(angle_difference):
         end()
         return
     else:
-        bw.speed = 45
+        bw.speed = angular_velocity
         bw.left_wheel.forward()
         bw.right_wheel.backward()
         time.sleep(0.1)
@@ -182,17 +146,22 @@ def main():
                 else:
                     continue
 
+                current_heading_angle = get_current_heading_angle() + 90
+                current_heading_angle = math.radians(current_heading_angle)
+                xCoord = np.array(x_coord, y_coord, current_heading_angle)
+                uCoord = np.array(new_coordinate[0],new_coordinate[1], 0)
 
 
-                desired_heading_angle = calculate_angle(coordinate_int, new_coordinate)
-                current_heading_angle = get_current_heading_angle()
-                angle_difference = desired_heading_angle - current_heading_angle
+
+                v,w,phi = ud.unicycleDynamics(xCoord, uCoord)
+                angle_difference = phi - current_heading_angle #might just need phi and not the difference
+                
                 if angle_difference <= 10:
                     end()
                     still_turning = 0
                 else:
                     time.sleep(1.0)
-                    pivot_turn(angle_difference)
+                    pivot_turn(angle_difference,w)
 
                 if still_turning == 0:
 
