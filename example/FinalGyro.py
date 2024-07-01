@@ -19,6 +19,8 @@ GYRO_XOUT_H = 0x43
 # Create I2C bus
 bus = smbus.SMBus(1)
 
+global currentTime
+global previousTime
 # Initialize variables
 AccX, AccY, AccZ = 0, 0, 0
 GyroX, GyroY, GyroZ = 0, 0, 0
