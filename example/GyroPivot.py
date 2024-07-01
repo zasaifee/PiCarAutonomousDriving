@@ -11,7 +11,7 @@ import UnicycleDynamics as ud
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('10.200.204.10', 12345)
+server_address = ('10.200.207.132', 12345)
 sock.connect(server_address)    
 
 picar.setup()
