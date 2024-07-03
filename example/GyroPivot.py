@@ -1,7 +1,7 @@
 import socket   
 import time
 import math as math
-import FinalGyro as gyro
+import GyroKalmanFilter as gyro
 from picar import front_wheels
 from picar import back_wheels
 import picar
@@ -11,7 +11,7 @@ import UnicycleDynamics as ud
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('10.200.207.132', 12345)
+server_address = ('10.200.204.10', 12345)
 sock.connect(server_address)    
 
 picar.setup()
@@ -35,6 +35,7 @@ def get_current_heading_angle():
         float: Current heading angle (in radians)
     """
     heading_angle = gyro.yaw
+    print(heading_angle)
     return heading_angle
 
 def calculate_distance(current_coordinate, new_coordinate):
@@ -117,16 +118,20 @@ def main():
     """
     Main function to control the robot car based on received coordinate data.
     """
+
     new_coordinate = get_user_coordinate()
     print("The destination coordinate: ")
     print(new_coordinate)
     prev_distance = 0
     distance = 0
     still_turning = 1
-    gyro.Gyro() #Turn on and start monitoring the angle the car is facing
 
+    x_coord, y_coord = 0, 0
+    coordinate_int = (x_coord, y_coord)
     
     while True:
+        gyro.readGyro()
+
         data = sock.recv(1024)    
         if data:
             data_str = data.decode('utf-8')   
@@ -148,8 +153,8 @@ def main():
 
                 current_heading_angle = get_current_heading_angle() + 90
                 current_heading_angle = math.radians(current_heading_angle)
-                xCoord = np.array(x_coord, y_coord, current_heading_angle)
-                uCoord = np.array(new_coordinate[0],new_coordinate[1], 0)
+                xCoord = (x_coord, y_coord, current_heading_angle)
+                uCoord = (new_coordinate[0],new_coordinate[1], 0)
 
 
 
