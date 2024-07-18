@@ -88,8 +88,11 @@ def Gyro():
     """
     Function to calculate Gyro values and print them consistently
     """
+    global yaw
+    currentTime = time.time() 
+    gyroAngleX, gyroAngleY, gyroAngleZ = 0, 0, 0
     while True:
-        global yaw
+        # global yaw
         # === Read accelerometer data === //
         AccX = read_mpu6050_data(ACCEL_XOUT_H) / 16384.0
         AccY = read_mpu6050_data(ACCEL_XOUT_H+2) / 16384.0
