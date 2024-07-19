@@ -33,10 +33,6 @@ angle_z = 0 # angle calculated by kalman
 bias_z = 0  # gyroscope bias calculate by kalman
 rate_z = 0  # unbiased rate 
 
-# def get_yaw():
-#     global yaw
-#     return yaw
-
 # Function to read MPU6050 data
 def read_mpu6050_data(register):
     high = bus.read_byte_data(MPU, register)
@@ -87,7 +83,7 @@ bus.write_byte_data(MPU, 0x6B, 0x00)
 # Call this function if you need to get the IMU error values for your module
 calculate_IMU_error()
 
-def readGyro(yaw):
+def readGyro():
     global currentTime, GyroX, GyroY, GyroZ, bias_z, angle_z, P_angle_z, P_bias_z, Q_angle_z, gyroAngleX, gyroAngleY, accAngleX, accAngleY, roll, pitch
     while True:
         # === Read accelerometer data === //
