@@ -111,6 +111,7 @@ def main():
     print(new_coordinate)
     prev_distance = 0
     distance = 0
+    coordinate_int = (0,0)
     
     while True:
         data = sock.recv(1024)    
