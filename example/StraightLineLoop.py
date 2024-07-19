@@ -24,6 +24,7 @@ from picar import back_wheels
 from datetime import datetime
 import picar
 import re
+import GyroKalmanFilter as gyro
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -102,11 +103,12 @@ def get_user_coordinate():
     return (x, y)
 
 
-def main():
+def main(x_coordinate, y_coordinate,yaw): 
     """
     Main function to control the robot car based on received coordinate data.
     """
-    new_coordinate = get_user_coordinate()
+    new_coordinate = (x_coordinate, y_coordinate)
+    #get_user_coordinate()
     print("The destination coordinate: ")
     print(new_coordinate)
     prev_distance = 0
@@ -140,6 +142,7 @@ def main():
                 distance = calculate_distance(coordinate_int, new_coordinate)
                 print("The current distance: ")
                 print(distance)
+                print("Yaw: ", yaw.value)
 
                 if distance <= 10:
                     end()
@@ -157,5 +160,5 @@ if __name__ == '__main__':
             main()
     except KeyboardInterrupt:
          end()  
-
-sock.close()
+    finally:
+        sock.close()
