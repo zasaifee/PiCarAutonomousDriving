@@ -1,10 +1,10 @@
 import multiprocessing
-import GyroKalmanFilter
+import Gryo_Multiprocessing
 import StraightLineLoop
 
 def run_gyro(yaw):
     # Call the function that starts the gyroscope
-    GyroKalmanFilter.readGyro(yaw)
+    Gryo_Multiprocessing.readGyro(yaw)
 
 def run_straight_line_loop(x_coordinate, y_coordinate, yaw):
     # Call the function that starts the straight line loop

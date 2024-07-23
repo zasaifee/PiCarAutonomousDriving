@@ -24,7 +24,7 @@ from picar import back_wheels
 from datetime import datetime
 import picar
 import re
-import GyroKalmanFilter as gyro
+import example.Gryo_Multiprocessing as gyro
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
