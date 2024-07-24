@@ -6,6 +6,7 @@ import picar
 import threading
 import smbus2 as smbus
 import multiprocessing
+from multiprocessing import Value
 
 
 # MPU6050 Registers
@@ -37,6 +38,7 @@ R_measure_z = 0.03 # Measurment for noise
 angle_z = 0 # angle calculated by kalman
 bias_z = 0  # gyroscope bias calculate by kalman
 rate_z = 0  # unbiased rate 
+#yaw = Value('d', 0.0)  # 'd' is a typecode for double
 
 # Function to read MPU6050 data
 def read_mpu6050_data(register):
@@ -82,9 +84,8 @@ def calculate_IMU_error():
     GyroErrorY = GyroErrorY / 200
     GyroErrorZ = GyroErrorZ / 200
 
-yaw = multiprocessing.Value('d', 0.0)  # 'd' is for double
 
-def readGyro(yaw):
+def readGyro():
     global currentTime, GyroX, GyroY, GyroZ, bias_z, angle_z, P_angle_z, P_bias_z, Q_angle_z, gyroAngleX, gyroAngleY, accAngleX, accAngleY, roll, pitch
     while True:
         # === Read accelerometer data === //
@@ -133,8 +134,14 @@ def readGyro(yaw):
 
         # Print the values
         # print("Roll: ", roll, " Pitch: ", pitch, " Yaw: ", yaw)
-        print(yaw)
-        
+        #print(yaw)
+
+        file2 = open("/home/raspberrypi/PiCarAutonomousDriving/example/yawData.txt", "a+")
+        yawData = str(yaw)
+        file2.write(yawData)
+        file2.write("\n")
+        file2.close()
+
         time.sleep(0.10)
 
 
@@ -176,14 +183,11 @@ def end():
     bw.stop()
     fw.turn(90)
 
-def run(yaw):
+def run():
     while True:
         angle = calculate_angle([67, -13],[100, -160])
         print("angle: ")
         print(angle)
-
-        print("yaw: ")
-        print(yaw)
 
         diff = angle-yaw
         print("diff: ")
@@ -196,12 +200,31 @@ def run(yaw):
 
 def main():
 
-
-        readGyro_process = multiprocessing.Process(target=readGyro, args=(yaw,))
+        readGyro_process = multiprocessing.Process(target=readGyro)
         readGyro_process.start()
 
-        run_process = multiprocessing.Process(target=run, args=(yaw,))
-        run_process.start()
+        time.sleep(1)
+
+        angle = calculate_angle([76, 11],[241, 154])
+
+        angle = abs(angle)
+
+        with open("/home/raspberrypi/PiCarAutonomousDriving/example/yawData.txt", "r") as file:
+            lines = file.readlines()
+            yaw = float(lines[-1].strip())  # Get the last line in the file
+            #print(yaw)
+        
+        diff = angle-yaw
+
+        while(diff > 10):
+            diff = angle-yaw
+            print(yaw)
+            print(diff)
+            pivot_turn()
+            with open("/home/raspberrypi/PiCarAutonomousDriving/example/yawData.txt", "r") as file:
+                lines = file.readlines()
+                yaw = float(lines[-1].strip())  # Update the yaw value
+        end()
 
      
 
