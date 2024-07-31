@@ -24,11 +24,11 @@ from picar import back_wheels
 from datetime import datetime
 import picar
 import re
-import example.Gryo_Multiprocessing as gyro
+import Gryo_Multiprocessing as gyro
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('10.200.204.10', 12345)
+server_address = ('10.200.204.87', 12345)
 # Stephanie's IP Address: 10.200.204.10
 # Zarin's IP Address: 10.200.207.132 
 
@@ -103,12 +103,11 @@ def get_user_coordinate():
     return (x, y)
 
 
-def main(x_coordinate, y_coordinate,yaw): 
+def main(): 
     """
     Main function to control the robot car based on received coordinate data.
     """
-    new_coordinate = (x_coordinate, y_coordinate)
-    #get_user_coordinate()
+    new_coordinate = get_user_coordinate()
     print("The destination coordinate: ")
     print(new_coordinate)
     prev_distance = 0
@@ -130,6 +129,7 @@ def main(x_coordinate, y_coordinate,yaw):
 
                 if len(components) == 2:
                     x_str, y_str = components
+                    
                     if x_str and y_str:
                         x_coord = int(x_str)
                         y_coord = int(y_str)
@@ -142,7 +142,6 @@ def main(x_coordinate, y_coordinate,yaw):
                 distance = calculate_distance(coordinate_int, new_coordinate)
                 print("The current distance: ")
                 print(distance)
-                print("Yaw: ", yaw.value)
 
                 if distance <= 10:
                     end()

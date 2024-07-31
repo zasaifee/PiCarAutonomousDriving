@@ -1,7 +1,10 @@
 import socket   # Library of Low-level networking interfaces 
 import time
 import math
-from SunFounder_Line_Follower import Line_Follower
+import os
+import sys
+sys.path.insert(0, os.path.abspath('/home/raspberrypi/PiCarAutonomousDriving/example/Original_RaspberryPi_Code/SunFounder_Line_Follower'))
+import Line_Follower
 from picar import front_wheels
 from picar import back_wheels
 import picar
@@ -11,7 +14,7 @@ import picar
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the server's address and port
-server_address = ('10.200.207.224', 12345)  # Use laptop IP
+server_address = ('10.200.204.10', 12345)  # Use laptop IP
 sock.connect(server_address)    # Establish the connecton to remote server
 
 last_coordinate = None  # Variable to store last recieved coordinate

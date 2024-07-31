@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./example/Original_RaspberryPi_Code/SunFounder_",
+        "./example/Original_RaspberryPi_Code/SunFounder_Line_Follower",
+        "./example/GyroFiles"
+    ]
+}

@@ -7,14 +7,18 @@ Authors: Zarin Saifee & Stephanie Torres
 import socket   
 import time
 import math
-from SunFounder_Line_Follower import Line_Follower
+import os
+import sys
+sys.path.insert(0, os.path.abspath('/home/raspberrypi/PiCarAutonomousDriving/example/Original_RaspberryPi_Code/SunFounder_Line_Follower'))
+import Line_Follower
 from picar import front_wheels
 from picar import back_wheels
 from datetime import datetime
 import picar
 import re
 
-# Initialize the socket for communication
+# Initialize the socket clear
+# for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = ('10.200.204.10', 12345)  
 #.132 (zarin IP)

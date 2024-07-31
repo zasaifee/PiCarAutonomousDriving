@@ -1,13 +1,16 @@
 import socket   
 import time
 import math as math
-import example.GyroKalmanFilter as gyro
+import sys
+sys.path.append('/home/raspberrypi/PiCarAutonomousDriving/example/GyroFiles')
+import GyroKalmanFilter_Origional as gyro
 from picar import front_wheels
 from picar import back_wheels
 import picar
 import re
 import numpy as np
-import example.CodePrototype.UnicycleDynamics as ud
+sys.path.append('/home/raspberrypi/PiCarAutonomousDriving/example/CodePrototype')
+import UnicycleDynamics as ud
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

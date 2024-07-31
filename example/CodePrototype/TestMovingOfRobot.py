@@ -9,7 +9,10 @@
 ##################################################################################################
 #  imports for front and back wheel configurations and line follower stuff (unsure if needed)    #
 ################################################################################################## 
-from SunFounder_Line_Follower import Line_Follower
+import os
+import sys
+sys.path.insert(0, os.path.abspath('/home/raspberrypi/PiCarAutonomousDriving/example/Original_RaspberryPi_Code/SunFounder_Line_Follower'))
+import Line_Follower
 from picar import front_wheels
 from picar import back_wheels
 import time
