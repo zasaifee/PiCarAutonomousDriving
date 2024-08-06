@@ -1,21 +1,30 @@
-import socket   
+"""
+Autonomous Driving Code for Robot Car - 
+
+-------------------------------------------------------------------------------------------------------
+NOT FUNCTIONAL - NEED MULTIPROCESSING OR THREADING
+-------------------------------------------------------------------------------------------------------
+
+This script controls a robot car to autonomously navigate to a user-defined destination coordinate.
+It uses gyro data for heading angle, socket communication for real-time updates, and unicycle dynamics for motion control.
+
+Authors: Zarin Saifee & Stephanie Torres
+Date: July 2024
+
+"""
+
+import socket
 import time
-import math as math
+import math
 import sys
-sys.path.append('/home/raspberrypi/PiCarAutonomousDriving/example/GyroFiles')
-import GyroKalmanFilter_Origional as gyro
-from picar import front_wheels
-from picar import back_wheels
-import picar
-import re
-import numpy as np
-sys.path.append('/home/raspberrypi/PiCarAutonomousDriving/example/CodePrototype')
-import UnicycleDynamics as ud
+from picar import front_wheels, back_wheels
+from GyroFiles import GyroKalmanFilter_Origional as gyro
+from CodePrototype import UnicycleDynamics as ud
 
 # Initialize the socket for communication
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = ('10.200.204.10', 12345)
-sock.connect(server_address)    
+sock.connect(server_address)
 
 picar.setup()
 
@@ -32,10 +41,10 @@ fw.turning_max = 45
 
 def get_current_heading_angle():
     """
-    Gets the current heading angle of the robot car.
+    Get the current heading angle from the gyro.
 
     Returns:
-        float: Current heading angle (in radians)
+        float: Current heading angle in degrees.
     """
     heading_angle = gyro.yaw
     print(heading_angle)
@@ -43,33 +52,30 @@ def get_current_heading_angle():
 
 def calculate_distance(current_coordinate, new_coordinate):
     """
-    Calculates the y-axis distance between two coordinates.
+    Calculate the Euclidean distance between two coordinates.
 
     Args:
         current_coordinate (tuple): Current (x, y) coordinate.
         new_coordinate (tuple): New (x, y) coordinate.
 
     Returns:
-        float: Difference between y-coordinates.
+        float: Distance between the two coordinates.
     """
     dx = new_coordinate[0] - current_coordinate[0]
     dy = new_coordinate[1] - current_coordinate[1]
-    
     distance = math.sqrt(dx**2 + dy**2)
     return distance
 
-   
 def pivot_turn(angle_difference, angular_velocity):
     """
-    Perform a pivot turn based on the desired angle.
+    Perform a pivot turn based on the angle difference.
 
     Args:
-        desired_angle (float): The desired heading angle.
+        angle_difference (float): Difference between desired and current heading angle.
+        angular_velocity (float): Angular velocity for the turn.
     """
-
     if angle_difference == 0:
         end()
-        return
     else:
         bw.speed = angular_velocity
         bw.left_wheel.forward()
@@ -78,40 +84,34 @@ def pivot_turn(angle_difference, angular_velocity):
         bw.speed = 0
         bw.stop()
 
-
 def move_straight(coordA, coordB):
     """
-    Moves the robot car from coordA to coordB.
+    Move straight from coordA to coordB.
 
     Args:
         coordA (tuple): Starting (x, y) coordinate.
-        coordB (tuple): Target (x, y) coordinate.
+        coordB (tuple): Destination (x, y) coordinate.
     """
     if coordA == coordB:
         end()
-        return
     else:
         bw.speed = forward_speed
         bw.forward()
-        time.sleep(0.25) 
+        time.sleep(0.25)
         bw.speed = 0
         bw.stop()
 
-
-
 def end():
-    """
-    Stops the robot car and turns the front wheels to 90 degrees.
-    """
+    """Stop the robot car and turn the front wheels to 90 degrees."""
     bw.stop()
     fw.turn(90)
 
 def get_user_coordinate():
     """
-    Gets user input for a new coordinate.
+    Get user-defined destination coordinate.
 
     Returns:
-        tuple: User-specified (x, y) coordinate.
+        tuple: (x, y) coordinate.
     """
     x = float(input("Enter the x-coordinate: "))
     y = float(input("Enter the y-coordinate: "))
@@ -119,9 +119,14 @@ def get_user_coordinate():
 
 def main():
     """
-    Main function to control the robot car based on received coordinate data.
-    """
+    Main function for autonomous navigation.
 
+    1. Gets user-defined destination coordinate.
+    2. Reads gyro data for heading angle.
+    3. Receives real-time updates via socket communication.
+    4. Calculates angle difference and distance.
+    5. Executes pivot turns and straight movements accordingly.
+    """
     new_coordinate = get_user_coordinate()
     print("The destination coordinate: ")
     print(new_coordinate)
@@ -131,13 +136,13 @@ def main():
 
     x_coord, y_coord = 0, 0
     coordinate_int = (x_coord, y_coord)
-    
+
     while True:
         gyro.readGyro()
 
-        data = sock.recv(1024)    
+        data = sock.recv(1024)
         if data:
-            data_str = data.decode('utf-8')   
+            data_str = data.decode('utf-8')
             lines = re.split('\n|-', data_str)
             for line in lines:
                 if not line:
@@ -157,23 +162,21 @@ def main():
                 current_heading_angle = get_current_heading_angle() + 90
                 current_heading_angle = math.radians(current_heading_angle)
                 xCoord = (x_coord, y_coord, current_heading_angle)
-                uCoord = (new_coordinate[0],new_coordinate[1], 0)
+                uCoord = (new_coordinate[0], new_coordinate[1], 0)
 
+                v, w, phi = ud.unicycleDynamics(xCoord, uCoord)
+                angle_difference = phi - current_heading_angle
 
-
-                v,w,phi = ud.unicycleDynamics(xCoord, uCoord)
-                angle_difference = phi - current_heading_angle #might just need phi and not the difference
-                
                 if angle_difference <= 10:
                     end()
                     still_turning = 0
                 else:
                     time.sleep(1.0)
-                    pivot_turn(angle_difference,w)
+                    pivot_turn(angle_difference, w)
 
                 if still_turning == 0:
-
                     distance = calculate_distance(coordinate_int, new_coordinate)
+
                     print("The current distance: ")
                     print(distance)
                     if distance <= 10:
