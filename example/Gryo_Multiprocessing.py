@@ -1,3 +1,22 @@
+###################################################################################################################
+# This code goes over the MPU6050 gyro/accelerometer functionalities to determine the Yaw, Pitch, Roll.           #
+#  Originally this code was written for the Arduino Module but this code was transcribed to be used for           #
+#  the RaspberryPi written in Python.                                                                             #
+#                                                                                                                 #
+# This code is included in the over all multiprocess which allows us to use the socket, gyro and the raspberypi   #
+#  car. The biggest changes are creating an object to help pass gyro to another file (.value).                    #
+#                                                                                                                 #
+# References of Code used or Helped add:                                                                          #
+#  Main overall code:                                                                                             #
+#    1. https://howtomechatronics.com/tutorials/arduino/arduino-and-mpu6050-accelerometer-and-gyroscope-tutorial/ #
+#                                                                                                                 #
+#  Kalman Filter Code Examples:                                                                                   #
+#    1. https://github.com/ProFL/KalmanMPU6050                                                                    #
+#    2. https://github.com/rocheparadox/Kalman-Filter-Python-for-mpu6050                                          #
+#    3. https://ozzmaker.com/guide-interfacing-gyro-accelerometer-raspberry-pi-kalman-filter/                     #   
+#                                                                                                                 #
+###################################################################################################################
+
 import smbus2 as smbus
 import time
 import math
@@ -33,10 +52,6 @@ angle_z = 0 # angle calculated by kalman
 bias_z = 0  # gyroscope bias calculate by kalman
 rate_z = 0  # unbiased rate 
 
-# def get_yaw():
-#     global yaw
-#     return yaw
-
 # Function to read MPU6050 data
 def read_mpu6050_data(register):
     high = bus.read_byte_data(MPU, register)
@@ -48,15 +63,19 @@ def read_mpu6050_data(register):
 
 # Function to calculate IMU error
 def calculate_IMU_error():
+    # Include the global in order to use throughout code and multiprocessing.
     global AccErrorX, AccErrorY, GyroErrorX, GyroErrorY, GyroErrorZ
     c = 0
+
     while (c < 200):
         # Read and scale the accelerometer data below
         AccX = read_mpu6050_data(ACCEL_XOUT_H) / 16384.0
         AccY = read_mpu6050_data(ACCEL_XOUT_H+2) / 16384.0
         AccZ = read_mpu6050_data(ACCEL_XOUT_H+4) / 16384.0
+        
         # Sum all readings
 
+        # Needed to include epsilon so the return would not give a zero or else data is invalid and gives error in terminal.
         epsilon = 1e-7
         AccErrorX = AccErrorX + ((math.atan((AccY) / (math.sqrt(math.pow((AccX), 2) + math.pow((AccZ), 2))+epsilon)) * 180 / math.pi))
         AccErrorY = AccErrorY + ((math.atan(-1 * (AccX) / (math.sqrt(math.pow((AccY), 2) + math.pow((AccZ), 2))+ epsilon)) * 180 / math.pi))
@@ -109,7 +128,8 @@ def readGyro(yaw):
         GyroY = read_mpu6050_data(GYRO_XOUT_H+2) / 131.0
         GyroZ = read_mpu6050_data(GYRO_XOUT_H+4) / 131.0
 
-        # Correct the outputs with the calculated error values
+        # Correct the outputs with the calculated error values. 
+        # Not that it is needed but you can adjust these values in order to control the filter/Noise of the data being recieved.
         GyroX = GyroX + 0.56
         GyroY = GyroY - 2
         GyroZ = GyroZ + 0.01
@@ -128,13 +148,13 @@ def readGyro(yaw):
         # Currently the raw values are in degrees per seconds, deg/s, so we need to multiply by seconds (s) to get the angle in degrees
         gyroAngleX = gyroAngleX + GyroX * elapsedTime # Update gyroscope x angle
         gyroAngleY = gyroAngleY + GyroY * elapsedTime # Update gyroscope y angle
-        yaw.value = angle_z # Use the angle estimated by the Kalman filter
+        yaw.value = angle_z # Use the angle estimated by the Kalman filter. The .value is used to pull for the Multi_processing code.
 
         # Complementary filter - combine accelerometer and gyro angle values
         roll = 0.96 * gyroAngleX + 0.04 * accAngleX
         pitch = 0.96 * gyroAngleY + 0.04 * accAngleY
 
-        # Print the values
+        # Print the values (TESTING)
         # print("Roll: ", roll, " Pitch: ", pitch, " Yaw: ", yaw)
         
         time.sleep(0.10)

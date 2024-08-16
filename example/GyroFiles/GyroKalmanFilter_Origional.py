@@ -1,3 +1,22 @@
+###################################################################################################################
+# This code goes over the MPU6050 gyro/accelerometer functionalities to determine the Yaw, Pitch, Roll.           #
+#  Originally this code was written for the Arduino Module but this code was transcribed to be used for           #
+#  the RaspberryPi written in Python.                                                                             #
+#                                                                                                                 #
+# This code includes the Kalman Filter implementation and the values of the MPU6050 are well controlled with      #
+#  less noise compared to the origional gyro code wihtout a filter.                                               #
+#                                                                                                                 #
+# References of Code used or Helped add:                                                                          #
+#  Main overall code:                                                                                             #
+#    1. https://howtomechatronics.com/tutorials/arduino/arduino-and-mpu6050-accelerometer-and-gyroscope-tutorial/ #
+#                                                                                                                 #
+#  Kalman Filter Code Examples:                                                                                   #
+#    1. https://github.com/ProFL/KalmanMPU6050                                                                    #
+#    2. https://github.com/rocheparadox/Kalman-Filter-Python-for-mpu6050                                          #
+#    3. https://ozzmaker.com/guide-interfacing-gyro-accelerometer-raspberry-pi-kalman-filter/                     #   
+#                                                                                                                 #
+###################################################################################################################
+
 import smbus2 as smbus
 import time
 import math
@@ -84,7 +103,9 @@ bus.write_byte_data(MPU, 0x6B, 0x00)
 calculate_IMU_error()
 
 def readGyro():
+    # Initialize in order to use in the multiprocessing
     global currentTime, GyroX, GyroY, GyroZ, bias_z, angle_z, P_angle_z, P_bias_z, Q_angle_z, gyroAngleX, gyroAngleY, accAngleX, accAngleY, roll, pitch
+    
     while True:
         # === Read accelerometer data === //
         # Read and scale the accelerometer data
@@ -130,7 +151,7 @@ def readGyro():
         roll = 0.96 * gyroAngleX + 0.04 * accAngleX
         pitch = 0.96 * gyroAngleY + 0.04 * accAngleY
 
-        # Print the values
+        # Print the values (Testing)
         # print("Roll: ", roll, " Pitch: ", pitch, " Yaw: ", yaw)
         
         time.sleep(0.10)

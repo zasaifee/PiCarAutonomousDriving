@@ -1,3 +1,10 @@
+#########################################################################################
+# This code was use to test the turning of the front two wheels of the Raspberry Pi in  #
+#   along with adding bounding statements to attempt to control turning.                #
+#                                                                                       #
+#   Authors: Zarin Saifee & Stephanie Torres                                            #
+#########################################################################################
+
 import socket   # Library of Low-level networking interfaces 
 import time
 import math

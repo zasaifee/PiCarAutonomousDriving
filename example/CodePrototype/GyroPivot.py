@@ -1,3 +1,10 @@
+#############################################################################################
+# The purpose of this code is to combine the Gyro sensor, pivot code, and the incorporation #
+#  of the Unicycle Dynamics to test functionality.                                          #
+#                                                                                           #
+#   Authors: Zarin Saifee                                                                   #
+#############################################################################################
+
 import socket   
 import time
 import math as math

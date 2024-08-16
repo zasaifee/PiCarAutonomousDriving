@@ -1,3 +1,10 @@
+#########################################################################################
+# The code implements the Unicycle model in which was a very important focus for the    #
+#  research project in order to determine proper variable to measure.                   #
+#                                                                                       #
+#   Authors: Zarin Saifee                                                               #
+#########################################################################################
+
 import numpy as np
 import math as math
 

@@ -1,3 +1,14 @@
+#######################################################################################################
+# This code is the overall multiprocessing use in order to use the Gyro(MPU6050) and in this case     #
+#  use the StraightLineLoop code in order to test if it is correctly being used. In which it was      #
+#  working as it should after a few minor testing changes.                                            #
+#                                                                                                     #
+#  References:                                                                                        #
+#     1.                                                                                              #
+#                                                                                                     #
+#  Author:  Zarin Saifee                                                                              #
+#######################################################################################################
+
 import multiprocessing
 import Gryo_Multiprocessing
 import StraightLineLoop
