@@ -153,5 +153,5 @@ def readGyro():
 
         # Print the values (Testing)
         # print("Roll: ", roll, " Pitch: ", pitch, " Yaw: ", yaw)
-        
+          
         time.sleep(0.10)

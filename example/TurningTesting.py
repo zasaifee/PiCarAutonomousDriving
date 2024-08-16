@@ -1,7 +1,7 @@
 ######################################################################################################################
 #  Waiting for Zarin for update on comment                                                                                                           #
 ######################################################################################################################
-
+ 
 import time
 import math
 from picar import front_wheels
@@ -11,7 +11,6 @@ import threading
 import smbus2 as smbus
 import multiprocessing
 from multiprocessing import Value
-
 
 # MPU6050 Registers
 MPU = 0x68

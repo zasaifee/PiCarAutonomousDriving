@@ -6,7 +6,7 @@
 #   Authors:  Zarin Saifee & Stephanie Torres                                           #
 #########################################################################################
 
-import socket   # Library of Low-level networking interfaces 
+import socket  # Library of Low-level networking interfaces 
 import time
 import math
 import os

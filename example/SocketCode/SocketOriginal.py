@@ -15,7 +15,6 @@
 #      - https://www.geeksforgeeks.org/socket-programming-python/                                                    #
 #                                                                                                                    #
 ######################################################################################################################
-
 import socket   # Library of Low-level networking interfaces 
 import time
 import math

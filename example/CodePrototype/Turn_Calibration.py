@@ -15,7 +15,6 @@ from picar import front_wheels
 from picar import back_wheels
 import picar
    
-
 # Initialize the last_coordinate variable
 last_coordinate = None  
 

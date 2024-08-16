@@ -16,7 +16,6 @@
 #    3. https://ozzmaker.com/guide-interfacing-gyro-accelerometer-raspberry-pi-kalman-filter/                     #   
 #                                                                                                                 #
 ###################################################################################################################
-
 import smbus2 as smbus
 import time
 import math

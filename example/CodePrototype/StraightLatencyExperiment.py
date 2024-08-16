@@ -58,6 +58,7 @@ fw.turning_max = 45
 #        - angle (float): The calculated angle.                                         #
 #        - distance (float): The calculated distance.                                   #
 #########################################################################################
+
 def calculate_distance(current_coordinate, new_coordinate):
     dx = new_coordinate[0] - current_coordinate[0]
     dy = new_coordinate[1] - current_coordinate[1]
