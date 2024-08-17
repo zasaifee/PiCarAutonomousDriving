@@ -4,23 +4,16 @@ _______________________________________________________________________
 This is an updated version of the SunFounder PiCar Kit - S. 
 It has been worked on by Zarin Saifee and Stephanie Torres. 
 _______________________________________________________________________
-New Files:
+Overview as of 8/17/2024:
 
-TestMovingOfRobot.py - General Movement
+- **example**: Contains the initial code provided by SunFounder, which helped in understanding the Raspberry Pi car's functionalities.
+- **CodePrototype**: Includes various scripts for different movement functionalities of the PiCar, such as `FrontWheelMain.py`, `GyroPivot.py`, and `PivotTurnMain.py`.
+- **GyroFiles**: Contains backup versions of the gyroscope code and additional files to control data noise, including `FinalGyro.py` and `GyroKalmanFilter_Original.py`.
+- **Original_RaspberryPi_Code**: Houses the original code written by SunFounder, used as a reference during the prototype process.
+- **SocketCode**: Contains the initial socket programming code, including `LaptopConnection.py` and `SocketOriginal.py`.
+- **New Code**: Added scripts like `StraightLatencyExperiment.py` for precise navigation, `UnicycleDynamics.py` for simulating car-like dynamics, and `develop.py` for integrating multiple functionalities.
 
-TestSocketAndCoordinate.py - Fallback file for communicating with computer/camera
-
-Turn_Calibration.py - Test different times where indicated in order to determine how many seconds it takes to pivot turn exactly 180 degrees (from there you can calculate the seconds it takes to travel 1 degree)
-
-PivotTurnMain.py -  Main program that has the robot use the pivot turn to reach destination coordinate
-
-SocketOriginal.py - Tests socket
-
-StraightLatencyExperiment.py - The program that tests the latency of the robot as it calculates the time it takes to process the data. Studying how the car moves forward.
-
-FrontWheelMain.py - Main program that has the robot use the front wheels to turn to reach the destination coordinate.
-
-________________________________________________________________________
+________________________________________________________________
 All other files in this repo were provided by SunFounder, and required
 for the functionality of any new code. 
 ________________________________________________________________________
